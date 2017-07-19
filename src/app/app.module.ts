@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import {DataTableModule} from "angular2-datatable";
+import { DataTableModule } from "angular2-datatable";
 import { Routing } from './app.routing';
 import { AppComponent } from './app.component';
 import { UserComponent } from './pages/user/user.component';
@@ -47,11 +48,12 @@ import { UserDataFilterPipe } from './pipes/user-data-filter.pipe';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     Routing,
     HttpModule,
     DataTableModule
   ],
-  providers: [UserService,ShopService,PlanService,FormService,ReportService,QuestionService],
+  providers: [UserService, ShopService, PlanService, FormService, ReportService, QuestionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

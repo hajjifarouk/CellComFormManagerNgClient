@@ -1,11 +1,15 @@
 import { Place } from './place';
+import { Process } from './process';
 export class Shop {
-  id = ''
-  code: String
-  first_name: String
-  last_name: String
+  _id = ''
+  code: Number
+  shop_name: String
+  client_name: String
+  email: String
+  tel: Number
   address: String
   city: String
   province: String
   place: Place
+  process: Process
 }

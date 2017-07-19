@@ -18,7 +18,7 @@ export class UserService {
     }
     addUser(user: User): Observable<any> {
         return this._http.post(this.userApi, user)
-            .map(res => res.json())
+            .map(res => {res.json();console.log("added")})
             .catch(err => err.json());
     }
     editUser(id,update): Observable<any>{

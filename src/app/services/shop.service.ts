@@ -11,7 +11,11 @@ import { Shop } from '../models/shop';
 export class ShopService {
     private shopApi = 'http://localhost:3000/shop';
     constructor(private _http: Http) { }
-    
+    getShop():Observable<any[]>{
+        return this._http.get(this.shopApi)
+            .map(res=>res.json())
+            .catch(err=>err.json());
+    }
     addShop(shop: Shop): Observable<any> {
         return this._http.post(this.shopApi, shop)
             .map(res => res.json())

@@ -1,3 +1,278 @@
-<p>
-  shop works!
-</p>
+<ol class="breadcrumb mb-0">
+  <li class="breadcrumb-item">Admin</li>
+  <li class="breadcrumb-item"><a [routerLink]="['/']" href="#">Dahboard</a>
+  </li>
+  <li class="breadcrumb-item active">Shops</li>
+</ol>
+<div class="container-fluid">
+  <div class="animated fadeIn">
+    <div class="card-block">
+      <table class="table table-striped table-bordered datatable" [mfData]="shops" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+        <thead>
+          <tr>
+            <th colspan="8">
+              <input class="form-control" [(ngModel)]="filterQuery" placeholder="Search" />
+            </th>
+            <th colspan="1">
+              <a class="btn btn-success" style="float: lerft;" href="#" data-toggle="modal" data-target="#importModal">
+                    <i class="fa fa-file-excel-o "></i>
+                  </a>
+              <a class="btn btn-success" style="float: right;" href="#" data-toggle="modal" data-target="#createModal">
+                    <i class="fa fa-plus "></i>
+                  </a>
+            </th>
+          </tr>
+          <tr>
+            <th>Code</th>
+            <th>Shop Name</th>
+            <th>Client Name</th>
+            <th>email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Province</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of mf.data">
+            <td>{{ item.code }}</td>
+            <td>{{ item.shop_name }}</td>
+            <td>{{ item.client_name }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.tel }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.city }}</td>
+            <td>{{ item.province }}</td>
+            <td>
+              <a class="btn btn-warning" (click)="selectedShop=item" data-toggle="modal" data-target="#updateModal" href="#">
+                    <i class="fa fa-pencil"></i>
+                  </a>
+              <a class="btn btn-danger" (click)="selectedShop=item" data-toggle="modal" data-target="#deleteModal" href="#">
+                    <i class="fa fa-trash"></i>
+                  </a>
+              <a class="btn btn-info" (click)="selectedShop=item" data-toggle="modal" data-target="#shopMap" href="#">
+                    <i class="fa fa-map-marker"></i>
+                  </a>
+            </td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="9">
+              <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]">
+              </mfBootstrapPaginator>
+              Max rows on one page*
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">New Shop</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-block">
+
+            <div class="form-group">
+              <label for="street">Code</label>
+              <input [(ngModel)]="newShop.code" name="code" type="number" class="form-control" id="code" placeholder="Code">
+            </div>
+
+            <div class="form-group">
+              <label for="company">Shop Name</label>
+              <input [(ngModel)]="newShop.shop_name" name="first_name" type="text" class="form-control" id="shop_name" placeholder="Shop Name">
+            </div>
+
+            <div class="form-group">
+              <label for="vat">Client Name</label>
+              <input [(ngModel)]="newShop.client_name" name="last_name" type="text" class="form-control" id="client_name" placeholder="Client Name">
+            </div>
+
+            <div class="form-group">
+              <label for="vat">Email</label>
+              <input [(ngModel)]="newShop.email" name="last_name" type="text" class="form-control" id="email" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+              <label for="vat">Phone</label>
+              <input [(ngModel)]="newShop.tel" name="last_name" type="text" class="form-control" id="tel" placeholder="Phone">
+            </div>
+
+            <div class="form-group">
+              <label for="street">Address</label>
+              <input [(ngModel)]="newShop.address" name="address" type="email" class="form-control" id="address" placeholder="Address">
+            </div>
+
+            <div class="form-group">
+              <label for="street">City</label>
+              <input [(ngModel)]="newShop.city" name="city" type="email" class="form-control" id="city" placeholder="City">
+            </div>
+
+            <div class="form-group">
+              <label for="street">Province</label>
+              <input [(ngModel)]="newShop.province" name="province" type="email" class="form-control" id="province" placeholder="Province">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="saveShop()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Shop</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-block">
+
+            <div class="form-group">
+              <label for="code">Code</label>
+              <input [(ngModel)]="selectedShop.code" name="code" type="number" class="form-control" id="code" placeholder="Code">
+            </div>
+
+            <div class="form-group">
+              <label for="shop_name">Shop Name</label>
+              <input [(ngModel)]="selectedShop.shop_name" name="shop_name" type="text" class="form-control" id="shop_name" placeholder="Shop Name">
+            </div>
+
+            <div class="form-group">
+              <label for="client_name">Client Name</label>
+              <input [(ngModel)]="selectedShop.client_name" name="client_name" type="text" class="form-control" id="client_name" placeholder="Client Name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input [(ngModel)]="selectedShop.email" name="email" type="text" class="form-control" id="email" placeholder="Email">
+            </div>
+
+            <div class="form-group">
+              <label for="tel">Phone</label>
+              <input [(ngModel)]="selectedShop.tel" name="tel" type="number" class="form-control" id="tel" placeholder="Phone">
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input [(ngModel)]="selectedShop.address" name="address" type="text" class="form-control" id="address" placeholder="Address">
+            </div>
+
+            <div class="form-group">
+              <label for="city">City</label>
+              <input [(ngModel)]="selectedShop.city" name="city" type="text" class="form-control" id="city" placeholder="City">
+            </div>
+
+            <div class="form-group">
+              <label for="province">Province</label>
+              <input [(ngModel)]="selectedShop.province" name="province" type="text" class="form-control" id="province" placeholder="Province">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="editShop()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Destroy Shop</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-block">
+            <h6>Are you shoure of deleting user <strong>{{ selectedShop.shop_name }} ??</strong></h6>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="deleteShop()" data-dismiss="modal" class="btn btn-danger">Yes, delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Import Shop from Excel</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input lang="EN" type="file" name="photo" ng2FileSelect [uploader]="uploader" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          />
+          <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length"
+            style="float: right;">Upload </button>
+        </div>
+        <div *ngIf="importResponse.length">
+          <table class="table table-striped table-bordered datatable" [mfData]="importResponse" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Province</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of mf.data">
+                <td>{{ item.code }}</td>
+                <td>{{ item.first_name }}</td>
+                <td>{{ item.last_name }}</td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.city }}</td>
+                <td>{{ item.province }}</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td colspan="9">
+                  <mfBootstrapPaginator [rowsOnPageSet]="[5,10,15]">
+                  </mfBootstrapPaginator>
+                  Max rows on one page*
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success btn-s" (click)="import()" [disabled]="!importResponse.length">Import </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Form } from './form';
 import { Answer } from './answer';
 import { Process } from './process';
 export class Report {
+    _id = ''
     ref: String
     date: Date
     user: User
