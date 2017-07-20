@@ -11,7 +11,11 @@ import { Form } from '../models/form';
 export class FormService {
     private formApi = 'http://localhost:3000/form';
     constructor(private _http: Http) { }
-    
+    getForm():Observable<any[]>{
+        return this._http.get(this.formApi)
+            .map(res=>res.json())
+            .catch(err=>err.json());
+    }
     addForm(form: Form): Observable<any> {
         return this._http.post(this.formApi, form)
             .map(res => res.json())

@@ -5,6 +5,7 @@ export class Form {
     ref: String
     title: String
     description: String
+    isActive: Boolean
     questions: Question[]
     process: Process
 }

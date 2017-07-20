@@ -26,7 +26,7 @@
             <th>Code</th>
             <th>Shop Name</th>
             <th>Client Name</th>
-            <th>email</th>
+            <th>Email</th>
             <th>Phone</th>
             <th>Address</th>
             <th>City</th>
@@ -272,6 +272,30 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-success btn-s" (click)="import()" [disabled]="!importResponse.length">Import </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="shopMap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Shop Location</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-block">
+            <agm-map [latitude]="marker.latitude" [longitude]="marker.longitude" (mapClick)="mapClicked($event)">
+              <agm-marker label="S" [latitude]="marker.latitude" [longitude]="marker.longitude" [markerDraggable]="marker.draggable" (dragEnd)="dragged($event)"></agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" (click)="editShopPosition()" data-dismiss="modal" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

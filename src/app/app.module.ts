@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
+import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { DataTableModule } from "angular2-datatable";
 import { Routing } from './app.routing';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { PlanService } from './services/plan.service';
 import { ReportService } from './services/report.service';
 
 import { UserDataFilterPipe } from './pipes/user-data-filter.pipe';
+import { QuestionComponent } from './pages/question/question.component';
 
 @NgModule({
   declarations: [
@@ -44,14 +46,21 @@ import { UserDataFilterPipe } from './pipes/user-data-filter.pipe';
     SideBarComponent,
     AsideBarComponent,
     HomeComponent,
-    UserDataFilterPipe
+    UserDataFilterPipe,
+    FileSelectDirective,
+    FileDropDirective,
+    QuestionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     Routing,
     HttpModule,
-    DataTableModule
+    DataTableModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDZexFLa1Izg7wJTJzP5pg3E7nNrA-P0ZU'
+    }),
   ],
   providers: [UserService, ShopService, PlanService, FormService, ReportService, QuestionService],
   bootstrap: [AppComponent]

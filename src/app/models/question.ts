@@ -1,7 +1,6 @@
 import { Choice } from './choice';
 export class Question {
-    _id = ''
-    body: String
-    type: String
+    text: String
+    kind: String
     choices: Choice[]
 }
