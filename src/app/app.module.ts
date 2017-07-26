@@ -30,6 +30,7 @@ import { ReportService } from './services/report.service';
 
 import { UserDataFilterPipe } from './pipes/user-data-filter.pipe';
 import { QuestionComponent } from './pages/question/question.component';
+import { ChoiceComponent } from './pages/choice/choice.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { QuestionComponent } from './pages/question/question.component';
     UserDataFilterPipe,
     FileSelectDirective,
     FileDropDirective,
-    QuestionComponent
+    QuestionComponent,
+    ChoiceComponent
   ],
   imports: [
     BrowserModule,

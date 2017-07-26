@@ -81,7 +81,31 @@
                   <button type="button" class="close" aria-label="Close" *ngIf="myForm.controls.questions.controls.length > 1" (click)="removeQuestion(i)"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="panel-body" [formGroupName]="i">
-                  <app-question [group]="myForm.controls.questions.controls[i]"></app-question>
+                  <!--<app-question [group]="myForm.controls.questions.controls[i]"></app-question>-->
+                  <div [formGroup]="myForm.controls.questions.controls[i]">
+                    <div class="form-group col-xs-6">
+                      <input type="text" class="form-control" formControlName="text">
+                      <small [hidden]="myForm.controls.questions.controls[i].controls.text.valid" class="text-danger">questoin body is required</small>
+                      <select class="form-control" formControlName="kind">
+                        <option [selected]="myForm.controls.questions.controls[i].controls.kind.value == null" value="">-- Select --</option>
+                          <option *ngFor="let kind of kinds" [value]="kind" >{{ kind }}</option>
+                      </select>
+                      <div formArrayName="choices">
+                        <div *ngFor="let choice of myForm.controls.questions.controls[i].controls.choices.controls; let j=index" class="panel panel-default">
+                          <div class="panel-heading">
+                            <span>Choice {{j + 1}}</span>
+                            <button type="button" class="close" aria-label="Close" *ngIf="myForm.controls.questions.controls[i].controls.choices.controls.length > 1" (click)="removeChoice(i,j)"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="panel-body" [formGroupName]="j">
+                            <app-choice [groupc]="myForm.controls.questions.controls[i].controls.choices.controls[j]"></app-choice>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="margin-20">
+                        <a (click)="addChoice(i)" style="cursor: default">Add another choice +</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -89,9 +113,12 @@
               <a (click)="addQuestion()" style="cursor: default">Add another question +</a>
             </div>
             <div class="clearfix"></div>
+            <div>myForm details:-</div>
+            <pre>Is myForm valid?: <br>{{myForm.valid | json}}</pre>
+            <pre>form value: <br>{{myForm.value | json}}</pre>
             <div class="margin-20 pull-right">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" onclick="$('#createModal').modal('hide')" class="btn btn-primary" [disabled]="!myForm.valid">Save changes</button>
+              <button type="submit" onclick="$('#createModal').modal('hide')" class="btn btn-primary">Save changes</button>
             </div>
           </form>
         </div>

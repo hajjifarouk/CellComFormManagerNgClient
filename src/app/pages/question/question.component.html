@@ -1,8 +1,29 @@
 <div [formGroup]="questionForm">
     <div class="form-group col-xs-6">
-        <input type="text" class="form-control" formControlName="body">
-        <small [hidden]="questionForm.controls.body.valid" class="text-danger">
+        <input type="text" class="form-control" formControlName="text">
+        <small [hidden]="questionForm.controls.text.valid" class="text-danger">
             questoin body is required
         </small>
+        <select class="form-control" formControleName="kind">
+            <option value="simpleQuestion">Simple Question</option>
+            <option value="binaryQuestion">Binary Question</option>
+            <option value="MultipleQuestion">Multiple Question</option>
+        </select>
+        <div formArrayName="choices">
+            <div *ngFor="let choice of questionForm.controls.choices.controls; let i=index" class="panel panel-default">
+                <div class="panel-heading">
+                    <span>Choice {{i + 1}}</span>
+                    <button type="button" class="close" aria-label="Close" *ngIf="questionForm.controls.choices.controls.length > 1" (click)="removeChoice(i)"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="panel-body" [formGroupName]="i">
+                    <app-choice [groupc]="questionForm.controls.choices.controls[i]"></app-choice>
+                </div>
+            </div>
+        </div>
+        <div class="margin-20">
+            <a (click)="addChoice()" style="cursor: default">Add another choice +</a>
+        </div>
     </div>
 </div>
+<pre>Is questionForm valid?: <br>{{questionForm.valid | json}}</pre>
+<pre>form value: <br>{{questionForm.value | json}}</pre>

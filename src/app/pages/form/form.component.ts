@@ -12,6 +12,7 @@ import { Question } from '../../models/question';
 export class FormComponent implements OnInit {
   public myForm: FormGroup; // our form model
 
+  kinds=["simple",'binary','multiple'];
   forms: Array<Form> = [];
   newForm: Form = new Form();
   selectedForm: Form = new Form();
@@ -26,28 +27,54 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.myForm = this._fb.group({
-      ref: ['', [Validators.required, Validators.minLength(5)]],
-      title: ['', [Validators.required, Validators.minLength(5)]],
-      isActive: ['',],
+      ref: [this.selectedForm.ref, [Validators.required, Validators.minLength(5)]],
+      title: [this.selectedForm.title, [Validators.required, Validators.minLength(5)]],
+      isActive: [this.selectedForm.isActive,],
       questions: this._fb.array([
         this.initQuestion(),
       ])
     });
+    this.myForm.controls['questions'].valueChanges
+      .subscribe( data => console.log( data ) );
     this.addQuestion();
   }
   initQuestion() {
+    console.log('question form init in form component');
     return this._fb.group({
-      body: ['', Validators.required]
+      text: ['', [Validators.required, Validators.minLength(5)]],
+      kind: ['binary', ],
+      choices: this._fb.array([
+        this.initChoice()
+      ])
     });
   }
   addQuestion() {
     const control = <FormArray>this.myForm.controls['questions'];
+    console.log(control);
     const questionCtrl = this.initQuestion();
     control.push(questionCtrl);
   }
   removeQuestion(i: number) {
     const control = <FormArray>this.myForm.controls['questions'];
     control.removeAt(i);
+  }
+  initChoice() {
+    return this._fb.group({
+      value: ['', Validators.required]
+    });
+  }
+  addChoice(i:number) {
+    const control1 =<FormArray>this.myForm.controls['questions'];
+    const control2=<FormGroup>control1.controls[i];
+    const controlChoice=<FormArray>control2.controls['choices'];
+    const choiceCtrl = this.initChoice();
+    controlChoice.push(choiceCtrl);
+  }
+  removeChoice(i: number,j:number) {
+    const control1 =<FormArray>this.myForm.controls['questions'];
+    const control2=<FormGroup>control1.controls[i];
+    const controlChoice=<FormArray>control2.controls['choices'];
+    controlChoice.removeAt(j);
   }
   populate(form: Form) {
     this.selectedForm = form;
@@ -58,7 +85,7 @@ export class FormComponent implements OnInit {
     (<FormControl>this.myForm.controls['isActive'])
       .setValue(form.isActive, { onlySelf: true });
     var quest = form.questions.map(function (obj) {
-      return ({ body: obj.body });
+      return ({ text: obj.text });
     });
     const questionFGs = quest.map(q => this._fb.group(q));
     const questionFormArray = this._fb.array(questionFGs);
@@ -68,7 +95,8 @@ export class FormComponent implements OnInit {
   saveForm(model: Form) {
     model = this.myForm.value;
     model.isActive = true;
-    this._formService.addForm(model).subscribe(
+    console.log(model);
+    /*this._formService.addForm(model).subscribe(
       value => {
         console.log(value);
         this._formService.getForm().subscribe(
@@ -82,7 +110,7 @@ export class FormComponent implements OnInit {
         this.myForm.reset();
       },
       error => { console.log(error) }
-    );
+    );*/
   }
   editForm(model: Form) {
     console.log(this.myForm.value);
@@ -108,5 +136,8 @@ export class FormComponent implements OnInit {
       (error) => { console.log(error) }
       );
     this.selectedForm=new Form();
+  }
+  select($event){
+    console.log($event.target.value);
   }
 }
